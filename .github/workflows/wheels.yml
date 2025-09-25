@@ -94,7 +94,7 @@ jobs:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
 
           # Test the wheels
-          CIBW_TEST_COMMAND: "python -c \"import flexhash; print('flexhash imported successfully'); result = flexhash.hash(b'test'); print(f'Hash result: {len(result)} bytes')\""
+          CIBW_TEST_COMMAND: 'python -c "import flexhash; print(''flexhash imported successfully''); result = flexhash.hash(b''test''); print(f''Hash result: {len(result)} bytes'')"'
 
           # Build settings
           CIBW_BUILD_VERBOSITY: 1
