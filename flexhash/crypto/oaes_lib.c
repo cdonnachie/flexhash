@@ -44,7 +44,7 @@ static const char _NR[] = {
 #include <stdlib.h>
 #include <stdio.h>
 
-#ifdef WIN32
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
 #include <process.h>
 #else
 #include <sys/types.h>
