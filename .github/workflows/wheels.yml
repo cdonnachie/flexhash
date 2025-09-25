@@ -4,8 +4,8 @@ on:
   push:
     branches: [main, master]
     tags: ["v*"]
-  pull_request:          # Test the wheels
-          CIBW_TEST_COMMAND: "python test_wheel.py"   branches: [main, master]
+  pull_request:
+    branches: [main, master]
   release:
     types: [published]
   workflow_dispatch:
