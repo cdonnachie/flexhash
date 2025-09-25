@@ -21,10 +21,15 @@ on:
           - test-only
           - sdist-only
       python_versions:
-        description: "Python versions to build (comma-separated, e.g., 3.9,3.10,3.11)"
+        description: "Python versions to test"
         required: false
-        default: "3.8,3.9,3.10,3.11,3.12,3.13"
-        type: string
+        default: "all"
+        type: choice
+        options:
+          - all
+          - latest-only
+          - lts-only
+          - minimal
       skip_tests:
         description: "Skip running tests"
         required: false
@@ -144,7 +149,13 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ${{ fromJson(format('["{0}"]', join(split(github.event.inputs.python_versions || '3.8,3.9,3.10,3.11,3.12,3.13', ','), '", "'))) }}
+        python-version: >-
+          ${{
+            (github.event.inputs.python_versions == 'latest-only' && fromJSON('["3.13"]')) ||
+            (github.event.inputs.python_versions == 'lts-only' && fromJSON('["3.8", "3.11"]')) ||
+            (github.event.inputs.python_versions == 'minimal' && fromJSON('["3.11"]')) ||
+            fromJSON('["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]')
+          }}
 
     steps:
       - uses: actions/checkout@v4
