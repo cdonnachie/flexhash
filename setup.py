@@ -36,15 +36,27 @@ def get_source_files():
             if c_file.name not in exclude_files:
                 sources.append(str(c_file))
     
+    # Verify all source files exist
+    missing_files = [src for src in sources if not Path(src).exists()]
+    if missing_files:
+        raise FileNotFoundError(f"Missing source files: {missing_files}")
+    
+    print(f"Found {len(sources)} source files for compilation")
     return sources
 
-extra_compile_args = ["/O2"] if sys.platform == "win32" else ["-O3"]
+if sys.platform == "win32":
+    extra_compile_args = ["/O2"]
+    extra_link_args = []
+else:
+    extra_compile_args = ["-O3"]
+    extra_link_args = []
 
 ext = Extension(
     "flexhash._flexhash",
     sources=get_source_files(),
     include_dirs=[str(base), str(base / "crypto"), str(base / "crypto/sha3"), str(base / "crypto/cryptonote"), str(base / "crypto/utils")],
     extra_compile_args=extra_compile_args,
+    extra_link_args=extra_link_args,
 )
 
 setup(
