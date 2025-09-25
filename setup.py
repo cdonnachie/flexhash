@@ -38,7 +38,7 @@ def get_source_files():
     
     return sources
 
-extra_compile_args = ["/O2"] if sys.platform == "win32" else ["-O3", "-fvisibility=hidden"]
+extra_compile_args = ["/O2"] if sys.platform == "win32" else ["-O3"]
 
 ext = Extension(
     "flexhash._flexhash",
