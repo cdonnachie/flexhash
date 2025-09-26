@@ -91,13 +91,14 @@ static void getAlgoString(void *mem, unsigned int size, uint8_t *selectedAlgoOut
     unsigned char *p = (unsigned char *)mem;
     unsigned int len = size / 2;
     unsigned char j = 0;
-    bool selectedAlgo[algoCount];
+    bool *selectedAlgo = (bool*)malloc(algoCount * sizeof(bool));
+    if (!selectedAlgo) return; // Handle malloc failure
     for (int z = 0; z < algoCount; z++)
     {
         selectedAlgo[z] = false;
     }
     int selectedCount = 0;
-    for (i = 0; i < len; i++)
+    for (i = 0; (unsigned int)i < len; i++)
     {
         selectAlgo(p[i], selectedAlgo, selectedAlgoOutput, algoCount, &selectedCount);
         if (selectedCount == algoCount)
@@ -116,11 +117,12 @@ static void getAlgoString(void *mem, unsigned int size, uint8_t *selectedAlgoOut
             }
         }
     }
+    free(selectedAlgo);
 }
 
 void flex_hash(const char *input, char *output, uint32_t len)
 {
-    uint32_t hash[64 / 4];
+    unsigned char hash[64];
     sph_blake512_context ctx_blake;
     sph_bmw512_context ctx_bmw;
     sph_groestl512_context ctx_groestl;
@@ -204,22 +206,22 @@ void flex_hash(const char *input, char *output, uint32_t len)
         switch (cnAlgo)
         {
         case CNDark:
-            cryptonightdark_hash(in, hash, size, 1);
+            cryptonightdark_hash(in, (char*)hash, size, 1);
             break;
         case CNDarklite:
-            cryptonightdarklite_hash(in, hash, size, 1);
+            cryptonightdarklite_hash(in, (char*)hash, size, 1);
             break;
         case CNFast:
-            cryptonightfast_hash(in, hash, size, 1);
+            cryptonightfast_hash(in, (char*)hash, size, 1);
             break;
         case CNLite:
-            cryptonightlite_hash(in, hash, size, 1);
+            cryptonightlite_hash(in, (char*)hash, size, 1);
             break;
         case CNTurtle:
-            cryptonightturtle_hash(in, hash, size, 1);
+            cryptonightturtle_hash(in, (char*)hash, size, 1);
             break;
         case CNTurtlelite:
-            cryptonightturtlelite_hash(in, hash, size, 1);
+            cryptonightturtlelite_hash(in, (char*)hash, size, 1);
             break;
         }
         // selection core algo
