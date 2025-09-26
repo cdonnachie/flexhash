@@ -2,14 +2,13 @@
 #define CRYPTONIGHT_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #include <stdint.h>
 
-    void cryptonight_hash(const char *input, char *output, uint32_t len, int variant);
-    void cryptonight_fast_hash(const char *input, char *output, uint32_t len);
+void cryptonight_hash(const char* input, char* output, uint32_t len, int variant);
+void cryptonight_fast_hash(const char* input, char* output, uint32_t len);
 
 #ifdef __cplusplus
 }

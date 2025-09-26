@@ -28,9 +28,13 @@ def get_source_files():
         for c_file in utils_dir.glob("*.c"):
             sources.append(str(c_file))
     
-    # Add sha3 files, excluding template/helper files
+    # Add sha3 files, excluding template/helper files and non-sph duplicates
     sha3_dir = base / "crypto/sha3"
-    exclude_files = {'md_helper.c', 'aes_helper.c', 'hamsi_helper.c', 'haval_helper.c'}
+    # We prefer the sph_* implementations; skip helper templates and
+    # the duplicate plain 'skein.c' which defines the same symbols as
+    # 'sph_skein.c' and would cause multiple-definition link errors.
+    exclude_files = {'md_helper.c', 'aes_helper.c', 'hamsi_helper.c',
+                     'haval_helper.c', 'skein.c', 'jh.c', 'cubehash.c', 'hamsi.c', 'gost_streebog.c', 'fugue.c', 'sha3.c', 'echo.c', 'lyra2.c'}
     if sha3_dir.exists():
         for c_file in sha3_dir.glob("*.c"):
             if c_file.name not in exclude_files:

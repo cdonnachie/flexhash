@@ -38,8 +38,19 @@ static struct PyModuleDef Module = {
     -1,
     Methods};
 
-EXPORT PyMODINIT_FUNC 
-PyInit__flexhash(void) 
-{ 
-    return PyModule_Create(&Module); 
+/* Ensure C linkage for the module init symbol. If compiled as C++ the
+   name would be mangled otherwise and Python won't find PyInit__flexhash. */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+    EXPORT PyMODINIT_FUNC
+    PyInit__flexhash(void)
+    {
+        return PyModule_Create(&Module);
+    }
+
+#ifdef __cplusplus
 }
+#endif

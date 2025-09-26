@@ -11,13 +11,11 @@ typedef unsigned long long DataLength;
 
 typedef std::string blobdata;
 
-namespace crypto
-{
+namespace crypto {
 #pragma pack(push, 1)
-    class hash
-    {
-        char data[HASH_SIZE];
-    };
+  class hash {
+    char data[HASH_SIZE];
+  };
 #pragma pack(pop)
 }
 

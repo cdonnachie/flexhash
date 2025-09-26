@@ -46,6 +46,7 @@ static const char _NR[] = {
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64)
 #include <process.h>
+#define getpid _getpid
 #else
 #include <sys/types.h>
 #include <unistd.h>

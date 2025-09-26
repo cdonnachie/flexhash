@@ -15,7 +15,7 @@
  * ==========================(LICENSE BEGIN)============================
  *
  * Copyright (c) 2007-2010  Projet RNRT SAPHIR
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -23,10 +23,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -52,12 +52,12 @@
 /**
  * Output size (in bits) for Tiger.
  */
-#define SPH_SIZE_tiger 192
+#define SPH_SIZE_tiger   192
 
 /**
  * Output size (in bits) for Tiger2.
  */
-#define SPH_SIZE_tiger2 192
+#define SPH_SIZE_tiger2   192
 
 /**
  * This structure is a context for Tiger computations: it contains the
@@ -69,12 +69,11 @@
  * can be cloned by copying the context (e.g. with a simple
  * <code>memcpy()</code>).
  */
-typedef struct
-{
+typedef struct {
 #ifndef DOXYGEN_IGNORE
-    unsigned char buf[64]; /* first field, for alignment */
-    sph_u64 val[3];
-    sph_u64 count;
+	unsigned char buf[64];    /* first field, for alignment */
+	sph_u64 val[3];
+	sph_u64 count;
 #endif
 } sph_tiger_context;
 
@@ -140,7 +139,7 @@ void sph_tiger2_init(void *cc);
 #endif
 
 #ifndef DOXYGEN_IGNORE
-#define sph_tiger2_init sph_tiger_init
+#define sph_tiger2_init   sph_tiger_init
 #endif
 
 #ifdef DOXYGEN_IGNORE
@@ -156,7 +155,7 @@ void sph_tiger2(void *cc, const void *data, size_t len);
 #endif
 
 #ifndef DOXYGEN_IGNORE
-#define sph_tiger2 sph_tiger
+#define sph_tiger2   sph_tiger
 #endif
 
 /**
@@ -184,9 +183,10 @@ void sph_tiger2_comp(const sph_u64 msg[8], sph_u64 val[3]);
 #endif
 
 #ifndef DOXYGEN_IGNORE
-#define sph_tiger2_comp sph_tiger_comp
+#define sph_tiger2_comp   sph_tiger_comp
 #endif
 
 #endif
 
 #endif
+
