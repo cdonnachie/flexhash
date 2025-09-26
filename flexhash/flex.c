@@ -94,6 +94,9 @@ static void getAlgoString(void *mem, unsigned int size, uint8_t *selectedAlgoOut
     bool *selectedAlgo = (bool *)malloc(algoCount * sizeof(bool));
     if (!selectedAlgo)
         return; // Handle malloc failure
+    bool *selectedAlgo = (bool *)malloc(algoCount * sizeof(bool));
+    if (!selectedAlgo)
+        return; // Handle malloc failure
     for (int z = 0; z < algoCount; z++)
     {
         selectedAlgo[z] = false;
@@ -208,20 +211,26 @@ void flex_hash(const char *input, char *output, uint32_t len)
         {
         case CNDark:
             cryptonightdark_hash(in, (char *)hash, size, 1);
+            cryptonightdark_hash(in, (char *)hash, size, 1);
             break;
         case CNDarklite:
+            cryptonightdarklite_hash(in, (char *)hash, size, 1);
             cryptonightdarklite_hash(in, (char *)hash, size, 1);
             break;
         case CNFast:
             cryptonightfast_hash(in, (char *)hash, size, 1);
+            cryptonightfast_hash(in, (char *)hash, size, 1);
             break;
         case CNLite:
+            cryptonightlite_hash(in, (char *)hash, size, 1);
             cryptonightlite_hash(in, (char *)hash, size, 1);
             break;
         case CNTurtle:
             cryptonightturtle_hash(in, (char *)hash, size, 1);
+            cryptonightturtle_hash(in, (char *)hash, size, 1);
             break;
         case CNTurtlelite:
+            cryptonightturtlelite_hash(in, (char *)hash, size, 1);
             cryptonightturtlelite_hash(in, (char *)hash, size, 1);
             break;
         }

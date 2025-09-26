@@ -35,7 +35,7 @@
  *
  * @param state         The 1024-bit array to be initialized
  */
-inline void initState(uint64_t state[/*16*/])
+void initState(uint64_t state[/*16*/])
 {
 	// First 512 bis are zeros
 	memset(state, 0, 64);
