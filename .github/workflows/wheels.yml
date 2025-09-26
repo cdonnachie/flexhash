@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build FlexHash
 
 on:
   push:
@@ -43,10 +43,16 @@ jobs:
     if: ${{ !github.event.inputs.build_target || github.event.inputs.build_target == 'all' || github.event.inputs.build_target == 'wheels-only' }}
     strategy:
       matrix:
-        # Build for Linux only for now
+        # Build for Linux, Windows, and macOS
         include:
           - os: ubuntu-latest
             arch: x86_64
+          - os: windows-latest
+            arch: AMD64
+          - os: macos-latest
+            arch: x86_64
+          - os: macos-latest
+            arch: arm64
 
     steps:
       - uses: actions/checkout@v4
@@ -65,8 +71,10 @@ jobs:
           # Build for Python 3.8, 3.9, 3.10, 3.11, 3.12, 3.13
           CIBW_BUILD: "cp3{8,9,10,11,12,13}-*"
 
-          # Set architecture for Linux x86_64 only
-          CIBW_ARCHS_LINUX: x86_64
+          # Set architectures for each platform
+          CIBW_ARCHS_LINUX: ${{ matrix.arch }}
+          CIBW_ARCHS_WINDOWS: ${{ matrix.arch }}
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
 
           # Test the wheels with debugging
           #CIBW_BEFORE_TEST: 'pip show flexhash && python -c "import site; print(''Site packages:'', site.getsitepackages())"'
@@ -75,12 +83,16 @@ jobs:
           # Build settings
           CIBW_BUILD_VERBOSITY: 1
 
-          # Repair wheels (embed dependencies) for Linux
+          # Repair wheels (embed dependencies) for each platform
           CIBW_REPAIR_WHEEL_COMMAND_LINUX: "auditwheel repair -w {dest_dir} {wheel}"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
+          
+          # Windows-specific settings for MSVC
+          CIBW_ENVIRONMENT_WINDOWS: "CC=cl CXX=cl"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels-linux-x86_64
+          name: wheels-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
