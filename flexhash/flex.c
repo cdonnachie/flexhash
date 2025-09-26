@@ -94,9 +94,6 @@ static void getAlgoString(void *mem, unsigned int size, uint8_t *selectedAlgoOut
     bool *selectedAlgo = (bool *)malloc(algoCount * sizeof(bool));
     if (!selectedAlgo)
         return; // Handle malloc failure
-    bool *selectedAlgo = (bool *)malloc(algoCount * sizeof(bool));
-    if (!selectedAlgo)
-        return; // Handle malloc failure
     for (int z = 0; z < algoCount; z++)
     {
         selectedAlgo[z] = false;
