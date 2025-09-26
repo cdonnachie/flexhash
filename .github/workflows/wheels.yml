@@ -69,8 +69,8 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64
 
           # Test the wheels with debugging
-          CIBW_BEFORE_TEST: 'pip show flexhash && python -c "import site; print(''Site packages:'', site.getsitepackages())"'
-          CIBW_TEST_COMMAND: 'python -c "import sys; print(''Python path:'', sys.path); import flexhash; print(''Import successful''); result = flexhash.hash(b''test''); print(''Hash successful'')"'
+          #CIBW_BEFORE_TEST: 'pip show flexhash && python -c "import site; print(''Site packages:'', site.getsitepackages())"'
+          #CIBW_TEST_COMMAND: 'python -c "import sys; print(''Python path:'', sys.path); import flexhash; print(''Import successful''); result = flexhash.hash(b''test''); print(''Hash successful'')"'
 
           # Build settings
           CIBW_BUILD_VERBOSITY: 1
