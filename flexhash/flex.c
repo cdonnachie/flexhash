@@ -37,6 +37,8 @@
 #include "crypto/cryptonote/cryptonight_turtle.h"
 #include "crypto/cryptonote/cryptonight_turtle_lite.h"
 
+#define MAX_ALGOS 16
+
 enum Algo
 {
     BLAKE = 0,
@@ -85,45 +87,34 @@ static void selectAlgo(unsigned char nibble, bool *selectedAlgos, uint8_t *selec
     }
 }
 
-static void getAlgoString(void *mem, unsigned int size, uint8_t *selectedAlgoOutput, int algoCount)
+static void getAlgoString(void *mem, unsigned int size,
+                          uint8_t *selectedAlgoOutput, int algoCount)
 {
-    int i;
+    unsigned int i;
     unsigned char *p = (unsigned char *)mem;
     unsigned int len = size / 2;
-    unsigned char j = 0;
-    bool *selectedAlgo = (bool *)malloc(algoCount * sizeof(bool));
-    if (!selectedAlgo)
-        return; // Handle malloc failure
-    for (int z = 0; z < algoCount; z++)
-    {
-        selectedAlgo[z] = false;
-    }
+    bool selectedAlgo[MAX_ALGOS] = {0}; // use MAX_CN_ALGOS if you call with CN
     int selectedCount = 0;
-    for (i = 0; (unsigned int)i < len; i++)
+
+    for (i = 0; i < len; i++)
     {
         selectAlgo(p[i], selectedAlgo, selectedAlgoOutput, algoCount, &selectedCount);
         if (selectedCount == algoCount)
-        {
             break;
-        }
     }
     if (selectedCount < algoCount)
     {
-        for (uint8_t i = 0; i < algoCount; i++)
+        for (uint8_t j = 0; j < (uint8_t)algoCount; j++)
         {
-            if (!selectedAlgo[i])
-            {
-                selectedAlgoOutput[selectedCount] = i;
-                selectedCount++;
-            }
+            if (!selectedAlgo[j])
+                selectedAlgoOutput[selectedCount++] = j;
         }
     }
-    free(selectedAlgo);
 }
 
 void flex_hash(const char *input, char *output, uint32_t len)
 {
-    unsigned char hash[64];
+    uint32_t hash[64 / 4];
     sph_blake512_context ctx_blake;
     sph_bmw512_context ctx_bmw;
     sph_groestl512_context ctx_groestl;
@@ -208,26 +199,20 @@ void flex_hash(const char *input, char *output, uint32_t len)
         {
         case CNDark:
             cryptonightdark_hash(in, (char *)hash, size, 1);
-            cryptonightdark_hash(in, (char *)hash, size, 1);
             break;
         case CNDarklite:
-            cryptonightdarklite_hash(in, (char *)hash, size, 1);
             cryptonightdarklite_hash(in, (char *)hash, size, 1);
             break;
         case CNFast:
             cryptonightfast_hash(in, (char *)hash, size, 1);
-            cryptonightfast_hash(in, (char *)hash, size, 1);
             break;
         case CNLite:
-            cryptonightlite_hash(in, (char *)hash, size, 1);
             cryptonightlite_hash(in, (char *)hash, size, 1);
             break;
         case CNTurtle:
             cryptonightturtle_hash(in, (char *)hash, size, 1);
-            cryptonightturtle_hash(in, (char *)hash, size, 1);
             break;
         case CNTurtlelite:
-            cryptonightturtlelite_hash(in, (char *)hash, size, 1);
             cryptonightturtlelite_hash(in, (char *)hash, size, 1);
             break;
         }

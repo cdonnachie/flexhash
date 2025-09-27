@@ -1,3 +1,1 @@
 recursive-include flexhash *.h *.c
-include test_wheel.py
-include debug_import.py

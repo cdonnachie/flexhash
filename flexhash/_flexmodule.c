@@ -3,12 +3,6 @@
 #include <stdint.h>
 #include "flex.h" // declares flex_hash(...)  // NOLINT
 
-#if defined(_WIN32) || defined(_WIN64)
-#define EXPORT __declspec(dllexport)
-#else
-#define EXPORT __attribute__((visibility("default")))
-#endif
-
 // Python: flexhash.hash(data: bytes) -> bytes[32]
 static PyObject *py_flex_hash(PyObject *self, PyObject *args)
 {
@@ -38,19 +32,4 @@ static struct PyModuleDef Module = {
     -1,
     Methods};
 
-/* Ensure C linkage for the module init symbol. If compiled as C++ the
-   name would be mangled otherwise and Python won't find PyInit__flexhash. */
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
-    EXPORT PyMODINIT_FUNC
-    PyInit__flexhash(void)
-    {
-        return PyModule_Create(&Module);
-    }
-
-#ifdef __cplusplus
-}
-#endif
+PyMODINIT_FUNC PyInit__flexhash(void) { return PyModule_Create(&Module); }
