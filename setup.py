@@ -56,7 +56,7 @@ ext = Extension(
 
 setup(
     name="flexhash",
-    version="0.1.0",
+    version="1.0.0",
     description="Kylacoin Flex hashing (C extension)",
     packages=["flexhash"],
     ext_modules=[ext],
