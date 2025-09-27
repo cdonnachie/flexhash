@@ -1,38 +1,3 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[project]
-name = "flexhash"
-version = "1.0.0"
-description = "Kylacoin Flex hashing (C extension)"
-readme = "README.md"
-license = {file = "LICENSE"}
-requires-python = ">=3.8"
-authors = [
-    {name = "cdonnachie", email = "craig.donnachie@gmail.com"},  # Update with actual author info
-]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",  # Update if different
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Security :: Cryptography",
-    "Topic :: Software Development :: Libraries :: Python Modules",
-]
-keywords = ["hashing", "cryptography", "kylacoin", "c-extension"]
-
-[tool.setuptools]
-packages = ["flexhash"]
-
-[tool.setuptools.packages.find]
-where = ["."]
-
-[build_ext]
-inplace = 1

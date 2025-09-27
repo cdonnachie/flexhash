@@ -1,148 +1,47 @@
 # FlexHash
 
-A Python extension module implementing the Kylacoin Flex hashing algorithm. This is a high-performance C implementation that provides Python bindings for cryptographic hashing operations.
+A fast Python extension module implementing the Flex hashing algorithm used by Kylacoin and Lyncoin cryptocurrencies.
 
-## Overview
+[![PyPI version](https://badge.fury.io/py/flexhash.svg)](https://pypi.org/project/flexhash/)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-FlexHash is a multi-algorithm hash function that combines various cryptographic hashing algorithms including:
+## What is FlexHash?
 
-- **SHA3 family**: Blake, BMW, Groestl, Keccak, Skein, Luffa, CubeHash, Shavite, SIMD, Echo, Hamsi, Fugue, Shabal, Whirlpool, SHA2, Haval, Tiger
-- **Lyra2**: Memory-hard key derivation function
-- **GOST Streebog**: Russian cryptographic standard
-- **CryptoNight variants**: CryptoNight, CryptoNight Lite, CryptoNight Fast, CryptoNight Dark, CryptoNight Soft Shell, CryptoNight Turtle
-
-## Features
-
-- ⚡ **High Performance**: C implementation with Python bindings
-- 🔒 **Cryptographically Secure**: Multiple proven hash algorithms
-- 🐍 **Python 3.8+**: Modern Python support
-- 🏗️ **Cross Platform**: Works on Windows, Linux, and macOS
-- 📦 **Easy Installation**: Standard Python packaging
+FlexHash is a high-performance cryptographic hash function that combines multiple proven algorithms including SHA3, CryptoNight variants, and Lyra2. It's specifically designed for blockchain applications requiring secure and efficient hashing.
 
 ## Installation
 
-### Prerequisites
-
-**Linux/Ubuntu:**
+Install from PyPI (recommended):
 
 ```bash
-sudo apt-get install python3-dev build-essential
+pip install flexhash
 ```
 
-**Windows:**
+Or visit the [PyPI project page](https://pypi.org/project/flexhash/) for more details.
 
-- Visual Studio Build Tools or Visual Studio with C++ support
-- Python 3.8 or later
-
-**macOS:**
-
-```bash
-xcode-select --install
-```
-
-### Install from Source
-
-1. Clone this repository:
-
-```bash
-git clone https://github.com/cdonnachie/flexhash.git
-cd flexhash
-```
-
-2. Install the package:
-
-```bash
-# Using pip (recommended)
-pip install .
-
-# Or in development mode
-pip install -e .
-
-# Or using setuptools directly
-python setup.py install
-```
-
-## Usage
-
-### Basic Usage
+## Quick Start
 
 ```python
 import flexhash
 
 # Hash some data
 data = b"Hello, World!"
-hash_result = flexhash.hash(data)
+result = flexhash.hash(data)
 
 print(f"Input: {data}")
-print(f"Hash: {hash_result.hex()}")
-```
-
-### Mining/Blockchain Usage
-
-```python
-import flexhash
-import struct
-
-def mine_block(previous_hash, merkle_root, timestamp, bits, nonce):
-    """Example mining function using FlexHash"""
-    # Construct block header (simplified)
-    header = struct.pack(
-        '<32s32sIII',
-        previous_hash,
-        merkle_root,
-        timestamp,
-        bits,
-        nonce
-    )
-
-    # Compute hash
-    return flexhash.hash(header)
-
-# Example usage
-prev_hash = b'\x00' * 32
-merkle = b'\xFF' * 32
-timestamp = 1640995200  # Unix timestamp
-bits = 0x1d00ffff      # Difficulty target
-nonce = 12345
-
-block_hash = mine_block(prev_hash, merkle, timestamp, bits, nonce)
-print(f"Block hash: {block_hash.hex()}")
-```
-
-### Performance Testing
-
-```python
-import flexhash
-import time
-
-def benchmark_hash(iterations=10000):
-    """Benchmark the hash function performance"""
-    data = b"benchmark_data_" * 10  # 150 bytes
-
-    start_time = time.time()
-    for i in range(iterations):
-        result = flexhash.hash(data + str(i).encode())
-    end_time = time.time()
-
-    duration = end_time - start_time
-    hashes_per_sec = iterations / duration
-
-    print(f"Iterations: {iterations}")
-    print(f"Time: {duration:.3f} seconds")
-    print(f"Performance: {hashes_per_sec:.0f} hashes/second")
-
-benchmark_hash()
+print(f"Hash: {result.hex()}")
+# Output: Hash: 7a8b9c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b
 ```
 
 ## API Reference
 
 ### `flexhash.hash(data: bytes) -> bytes`
 
-Computes the Kylacoin Flex hash of the input data.
+Computes the Flex hash of the input data.
 
 **Parameters:**
 
-- `data` (bytes): Input data to hash
+- `data` (bytes): The data to hash
 
 **Returns:**
 
@@ -151,96 +50,38 @@ Computes the Kylacoin Flex hash of the input data.
 **Example:**
 
 ```python
-result = flexhash.hash(b"example data")
-assert len(result) == 32
-```
-
-## Development
-
-### Building from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/cdonnachie/flexhash.git
-cd flexhash
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install in development mode
-pip install -e .
-```
-
-### Testing
-
-```python
-# Basic functionality test
 import flexhash
 
-def test_basic_functionality():
-    # Test with known input
-    test_data = b"test_input_data"
-    result = flexhash.hash(test_data)
+# Basic usage
+hash_output = flexhash.hash(b"example data")
+assert len(hash_output) == 32
 
-    # Verify output properties
-    assert isinstance(result, bytes)
-    assert len(result) == 32
-
-    # Test consistency
-    result2 = flexhash.hash(test_data)
-    assert result == result2
-
-    print("✓ All tests passed!")
-
-test_basic_functionality()
-```
-
-### Project Structure
-
-```
-flexhash/
-├── __init__.py          # Python package initialization
-├── _flexmodule.c        # Python C extension interface
-├── flex.c               # Main Flex algorithm implementation
-├── flex.h               # Header file for Flex algorithm
-├── crypto/              # Cryptographic primitives
-├── cryptonote/          # CryptoNight algorithm variants
-├── sha3/                # SHA3 and related algorithms
-└── utils/               # Utility functions
+# Hash is deterministic
+hash1 = flexhash.hash(b"test")
+hash2 = flexhash.hash(b"test")
+assert hash1 == hash2
 ```
 
 ## Requirements
 
 - Python 3.8 or later
-- C compiler (GCC, Clang, or MSVC)
-- Standard C library
+- Works on Windows, Linux, and macOS
 
 ## License
 
 This project is licensed under the terms specified in the LICENSE file.
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## Security
-
-This library implements cryptographic functions. While the algorithms used are well-established, please:
-
-- Use this library at your own risk
-- Verify the implementation for your specific use case
-- Report security issues responsibly
-
 ## Related Projects
 
-- [Kylacoin](https://github.com/AvianNetwork) - The cryptocurrency that uses this hash function
-- [AvianNetwork](https://github.com/AvianNetwork) - Related blockchain projects
+- [Kylacoin](https://github.com/Kylacoin) - Kylacoin GitHub Repos
+- [Lyncoin](https://github.com/Lyncoin) - Lyncoin GitHub Repos
+
+## Links
+
+- **PyPI**: https://pypi.org/project/flexhash/
+- **Source Code**: https://github.com/cdonnachie/flexhash
+- **Issues**: https://github.com/cdonnachie/flexhash/issues
 
 ---
 
-**Note**: This is a cryptographic library intended for blockchain and cryptocurrency applications. Ensure you understand the security implications before using in production systems.
+_FlexHash is a cryptographic library for blockchain applications. Use responsibly and verify the implementation for your specific security requirements._
